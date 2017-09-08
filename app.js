@@ -1,16 +1,5 @@
-function cartesian(arr) {
-    return arr.reduce(function (a, b) {
-        return a.map(function (x) {
-            return b.map(function (y) {
-                return x.concat(y)
-            })
-        }).reduce(function (a, b) {
-            return a.concat(b)
-        }, [])
-    }, [
-        []
-    ])
-}
+const cartesian = arr =>
+    arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
 
 const vm = new Vue({
 
@@ -31,9 +20,7 @@ Pay plan (Pay Plan Maintenance Screen)
 Scan/Import Screen`
     },
     methods: {
-        pluralize: function(noun, count) {
-            return `${noun}${count == 1 ? '' : 's'}`
-        }
+        pluralize: (noun, count) => `${noun}${count == 1 ? '' : 's'}`
     },
     computed: {
         combos: function() {
