@@ -30,9 +30,7 @@
             el: '#app',
             data: { n: "DTUS\nDTCAN\n\nValid Routing number\nInvalid Routing number\n\nIn service call\nNot in service call\n\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen" },
             methods: { pluralize: (noun, count) => `${noun}${count == 1 ? '' : 's'}` },
-            computed: {
-                combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => "* " + e.join(" \\\\ ") + " \\\\ \\\\") }
-            }
+            computed: { combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => "* " + e.join(" \\\\ ") + " \\\\ \\\\") } }
         })
     </script>
 
