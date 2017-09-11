@@ -11,26 +11,61 @@
 <body>
     <section class="section">
         <div class="container" id="app">
+
             <img class="image" src="https://tilde.team/~ben/testgen/Hagerty.jpg">
             <h1 class="title">Multivariable TestGenerator</h1>
             <p class="subtitle">Enter each set of variables separated by an empty line. Paste the output into JIRA!</p>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <label class="label">Prefix</label>
+                    <input style="font-family:monospace;" v-model="prefix" type="text" class="input">
+                </div>
+                <div class="control">
+                    <label class="label">Delimiter</label>
+                    <input style="font-family:monospace;" v-model="delimiter" type="text" class="input">
+                </div>
+                <div class="control">
+                    <label class="label">Suffix</label>
+                    <input style="font-family:monospace;" v-model="suffix" type="text" class="input">
+                </div>
+            </div>
+
             <div class="field">
-                <label class="label"></label>
+                <label class="label">Variables</label>
                 <div class="control"><textarea style="font-family:monospace;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
+
             <p><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
             <pre>{{ combos.join('\n') }}</pre>
+
+
         </div>
     </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>Variable Combination Generator</p>
+                <p>Source code <a href="https://gitlab.com/benharri/testgen">here</a>.</p>
+                <p>More info on <a href="https://hagerty.atlassian.net/wiki/spaces/QA/pages/56328193/Test+Data+Generator">Confluence</a>.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/vue"></script>
     <script>
         const cartesian = arr => arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
         const vm = new Vue({
             el: '#app',
-            data: { n: "DTUS\nDTCAN\n\nValid Routing number\nInvalid Routing number\n\nIn service call\nNot in service call\n\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen" },
+            data: {
+                prefix: "* ",
+                delimiter: " \\\\ ",
+                suffix: " \\\\ \\\\",
+                n: "DTUS\nDTCAN\n\nValid Routing number\nInvalid Routing number\n\nIn service call\nNot in service call\n\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen"
+            },
             methods: { pluralize: (noun, count) => `${noun}${count == 1 ? '' : 's'}` },
-            computed: { combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => "* " + e.join(" \\\\ ") + " \\\\ \\\\") } }
+            computed: { combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => this.prefix + e.join(this.delimiter) + this.suffix) } }
         })
     </script>
 
