@@ -8,6 +8,7 @@
     <title>Hagerty TestGen</title>
 </head>
 
+<style>[v-cloak] { display: none }</style>
 <body>
     <section class="section">
         <div class="container" id="app">
@@ -39,8 +40,8 @@
                 <div class="control"><textarea style="font-family:monospace;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
 
-            <p><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
-            <pre>{{ combos.join('\n') }}</pre>
+            <p v-cloak><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
+            <pre v-cloak>{{ combos.join('\n') }}</pre>
 
         </div>
     </section>
