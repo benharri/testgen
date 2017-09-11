@@ -56,7 +56,7 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/vue"></script>
+    <script src="vue.min.js"></script>
     <script>
         const cartesian = arr => arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
         const vm = new Vue({
@@ -68,7 +68,7 @@
                 n: "DTUS\nDTCAN\n\nValid Routing number\nInvalid Routing number\n\nIn service call\nNot in service call\n\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen"
             },
             methods: { pluralize: (noun, count) => `${noun}${count == 1 ? '' : 's'}` },
-            computed: { combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => this.prefix + e.join(this.delimiter) + this.suffix) } }
+            computed: { combos() { return cartesian(this.n.trim().split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => this.prefix + e.join(this.delimiter) + this.suffix) } }
         })
     </script>
 
