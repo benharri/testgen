@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.css" />
     <title>Hagerty TestGen</title>
 </head>
@@ -15,22 +14,27 @@
             <img class="image" src="https://tilde.team/~ben/testgen/Hagerty.jpg">
             <h1 class="title">Multivariable TestGenerator</h1>
             <p class="subtitle">Enter each set of variables separated by an empty line. Paste the output into JIRA!</p>
-
             <div class="field">
                 <label class="label"></label>
-                <div class="control">
-                    <textarea rows="20" v-model="n" class="textarea" placeholder="enter your variables here"></textarea>
-                </div>
-                <br>
-                <p><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
-                <pre>{{ combos.join('\n') }}</pre>
+                <div class="control"><textarea style="font-family:monospace;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
+            <p><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
+            <pre>{{ combos.join('\n') }}</pre>
         </div>
     </section>
 
-    <!-- <script src="https://hagerty.atlassian.net/atlassian-connect/all.js"></script> -->
     <script src="https://unpkg.com/vue"></script>
-    <script src="app.js"></script>
+    <script>
+        const cartesian = arr => arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
+        const vm = new Vue({
+            el: '#app',
+            data: { n: "DTUS\nDTCAN\n\nValid Routing number\nInvalid Routing number\n\nIn service call\nNot in service call\n\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen" },
+            methods: { pluralize: (noun, count) => `${noun}${count == 1 ? '' : 's'}` },
+            computed: {
+                combos() { return cartesian(this.n.split('\n\n').map(e => e.split('\n').map(e => e.trim()))).map(e => "* " + e.join(" \\\\ ") + " \\\\ \\\\") }
+            }
+        })
+    </script>
 
 </body>
 </html>
