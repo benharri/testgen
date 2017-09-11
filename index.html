@@ -14,8 +14,9 @@
 
             <img class="image" src="https://tilde.team/~ben/testgen/Hagerty.jpg">
             <h1 class="title">Multivariable TestGenerator</h1>
-            <p class="subtitle">Enter each set of variables separated by an empty line. Paste the output into JIRA!</p>
+            <p class="subtitle">Enter each set of variables separated by an empty line. Paste the output into a Jira test case!</p>
 
+            <hr>
             <div class="field is-grouped">
                 <div class="control">
                     <label class="label">Prefix</label>
@@ -30,6 +31,8 @@
                     <input style="font-family:monospace;" v-model="suffix" type="text" class="input">
                 </div>
             </div>
+            <p><em>These presets will display the combinations as a bulleted list with Jira formatting. Feel free to change them as needed.</em></p>
+            <hr>
 
             <div class="field">
                 <label class="label">Variables</label>
@@ -38,7 +41,6 @@
 
             <p><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
             <pre>{{ combos.join('\n') }}</pre>
-
 
         </div>
     </section>
