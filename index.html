@@ -37,7 +37,7 @@
             <div class="field">
                 <label class="label">Variables</label>
                 <em>Lines starting with <code>#</code> are comments.</em>
-                <div class="control"><textarea style="font-family:monospace;" rows="20" v-model="n" class="textarea"></textarea></div>
+                <div class="control"><textarea style="font-family:monospace; resize:vertical;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
 
             <p v-cloak><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
@@ -55,8 +55,9 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-    <script>
+    <script type="text/babel">
         const cartesian = arr => arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
         const vm = new Vue({
             el: '#app',
