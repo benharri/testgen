@@ -40,8 +40,15 @@
                 <div class="control"><textarea style="font-family:monospace; resize:vertical;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
 
+            <br>
+            <hr>
+
             <p v-cloak><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
-            <pre v-cloak>{{ combos.join('\n') }}</pre>
+
+            <form action="export.php" method="POST">
+                <textarea v-cloak name="test_cases" style="font-family:monospace; resize:vertical;" rows="30" class="textarea">{{ combos.join('\n') }}</textarea>
+                <button type="submit">export to excel template</button>
+            </form>
 
         </div>
     </section>
@@ -71,9 +78,9 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                prefix: "* ",
-                delimiter: " \\\\ ",
-                suffix: " \\\\ \\\\",
+                prefix: "",
+                delimiter: " ",
+                suffix: "",
                 n: "# Country\nDTUS\nDTCAN\n\n# Routing number\nValid routing number\nInvalid routing number\n\n# Service call\nIncluded in service call\nNot included in service call\n\n# Payment type/source\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen"
             },
             methods: {
