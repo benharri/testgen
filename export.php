@@ -7,25 +7,13 @@ if (empty($_POST["test_cases"])) {
     die();
 }
 
-// split input by line
+// split input by line and place into template at cell B2
 $cases = explode("\n", $_POST["test_cases"]);
+$excel = PHPExcel_IOFactory::load("template.xlsx");
+$excel->getActiveSheet()->fromArray(array_chunk($cases, 1), NULL, 'B2');
 
 // set the right download headers
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="testcase-template.xls"');
 header('Cache-Control: max-age=0');
-
-PHPExcel_IOFactory::createWriter(
-    PHPExcel_IOFactory::load("template.xlsx")
-        ->getActiveSheet()
-        ->fromArray(
-            // place vertically
-            array_chunk($cases, 1)
-            // skip NULLs
-            , NULL
-            // starting at B2
-            , 'B2'
-            )
-    , 'Excel5'
-// save to request page
-)->save('php://output');
+PHPExcel_IOFactory::createWriter($excel, 'Excel5')->save('php://output');
