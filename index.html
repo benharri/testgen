@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.css" />
     <title>Multivar TestGen</title>
+    <style>[v-cloak] { display: none }</style>
 </head>
 
-<style>[v-cloak] { display: none }</style>
 <body>
     <section class="section">
         <div class="container" id="app">
@@ -37,7 +37,7 @@
             <div class="field">
                 <label class="label">Variables</label>
                 <em>Lines starting with <code>#</code> are comments.</em>
-                <div class="control"><textarea style="font-family:monospace;" rows="20" v-model="n" class="textarea"></textarea></div>
+                <div class="control"><textarea style="font-family:monospace; resize:vertical;" rows="20" v-model="n" class="textarea"></textarea></div>
             </div>
 
             <p v-cloak><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
@@ -57,8 +57,18 @@
 
     <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
     <script>
-        const cartesian = arr => arr.reduce((a, b) => a.map(x => b.map(y => x.concat(y))).reduce((a, b) => a.concat(b), []), [[]])
-        const vm = new Vue({
+        var cartesian = function cartesian(arr) {
+            return arr.reduce(function (a, b) {
+                return a.map(function (x) {
+                    return b.map(function (y) {
+                        return x.concat(y);
+                    });
+                }).reduce(function (a, b) {
+                    return a.concat(b);
+                }, []);
+            }, [[]]);
+        };
+        var vm = new Vue({
             el: '#app',
             data: {
                 prefix: "* ",
@@ -67,22 +77,27 @@
                 n: "# Country\nDTUS\nDTCAN\n\n# Routing number\nValid routing number\nInvalid routing number\n\n# Service call\nIncluded in service call\nNot included in service call\n\n# Payment type/source\nOne time (Payment Central)\nPay plan (Pay Plan Maintenance Screen)\nScan/Import Screen"
             },
             methods: {
-                pluralize: (noun, count) =>
-                    `${noun}${count == 1 ? '' : 's'}`
+                pluralize: function pluralize(noun, count) {
+                    return "" + noun + (count == 1 ? '' : 's');
+                }
             },
             computed: {
-                combos() {
-                    return cartesian(
-                        this.n.trim().split('\n\n')
-                        .map(e =>
-                            e.split('\n')
-                            .map(e => e.trim())
-                            .filter(e => e[0] !== '#')
-                        )
-                    ).map(e => `${this.prefix}${e.join(this.delimiter)}${this.suffix}`)
+                combos: function combos() {
+                    var _this = this;
+
+                    return cartesian(this.n.trim().split('\n\n').map(function (e) {
+                        return e.split('\n').map(function (e) {
+                            return e.trim();
+                        }).filter(function (e) {
+                            return e[0] !== '#';
+                        });
+                    })).map(function (e) {
+                        return "" + _this.prefix + e.join(_this.delimiter) + _this.suffix;
+                    });
                 }
             }
-        })
+        });
+
     </script>
 
 </body>
