@@ -17,6 +17,20 @@
             <p class="subtitle">Enter each set of variables separated by an empty line. Paste the output into a Jira test case!</p>
 
             <hr>
+
+            <label class="label">Formatting Preset</label>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="format-preset" @click="preset_export(true)" checked>
+                    Export Tool
+                </label>
+                <label class="radio">
+                    <input type="radio" name="format-preset" @click="preset_export(false)">
+                    Copy/Paste to Zephyr
+                </label>
+            </div>
+            <br>
+
             <div class="field is-grouped">
                 <div class="control">
                     <label class="label">Prefix</label>
@@ -32,6 +46,7 @@
                 </div>
             </div>
             <p><em>These presets will display the combinations as a bulleted list with Jira formatting. Feel free to change them as needed.</em></p>
+
             <hr>
 
             <div class="field">
@@ -46,8 +61,12 @@
             <p v-cloak><strong>{{ combos.length }}</strong> {{ pluralize("test case", combos.length) }}</p>
 
             <form action="export.php" method="POST">
-                <textarea v-cloak name="test_cases" style="font-family:monospace; resize:vertical;" rows="30" class="textarea">{{ combos.join('\n') }}</textarea>
-                <button type="submit">export to excel template</button>
+                <p class="control">
+                    <textarea v-cloak name="test_cases" style="font-family:monospace; resize:vertical;" rows="30" class="textarea">{{ combos.join('\n') }}</textarea>
+                </p>
+                <p class="control">
+                    <button class="button is-success" type="submit">export to excel template</button>
+                </p>
             </form>
 
         </div>
@@ -86,6 +105,11 @@
             methods: {
                 pluralize: function pluralize(noun, count) {
                     return "" + noun + (count == 1 ? '' : 's');
+                },
+                preset_export: function (f_export) {
+                    this.prefix = f_export ? "" : "* ";
+                    this.delimiter = f_export ? " " : " \\\\ ";
+                    this.suffix = f_export ? "" : " \\\\ \\\\";
                 }
             },
             computed: {
